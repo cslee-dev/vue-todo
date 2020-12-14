@@ -1,14 +1,14 @@
 <template>
   <section>
-    <ul>
-      <li v-for="(todoItem, index) in todoItems" :class="shadow">
+    <transition-group tag="ul" name="list">
+      <li v-for="(todoItem, index) in todoItems" :class="shadow" :key="todoItem">
         <i :class="checkBtn" aria-hidden="true"></i>
         {{ todoItem }}
         <span :class="remoteBtn" type="button" @click="removeTodo(todoItem, index)">
           <i :class="trashIcon" aria-hidden="true"></i>
         </span>
       </li>
-    </ul>
+    </transition-group>
   </section>
 </template>
 
@@ -62,5 +62,14 @@ li {
 .removeBtn {
   margin-left: auto;
   color: #de4343;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
