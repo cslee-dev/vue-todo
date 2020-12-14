@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
-    <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoInput @addItem="addItem"></TodoInput>
+    <TodoList :todoItems="todoItems" @removeBtn="removeItem"></TodoList>
+    <TodoFooter @removeAll="clearAll"></TodoFooter>
   </div>
 </template>
 
@@ -14,28 +14,55 @@ import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
 
 export default {
+  data() {
+    return {
+      'todoItems': [],
+    }
+  },
+  created() {
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        this.todoItems.push(localStorage.key(i));
+      }
+    }
+  },
   components: {
     TodoHeader, TodoInput, TodoList, TodoFooter
+  },
+  methods: {
+    removeItem(todoItem, index) {
+      console.log(todoItem, index);
+      localStorage.removeItem(todoItem);
+      this.todoItems.splice(index, 1);
+    },
+    addItem(todoItem) {
+      localStorage.setItem(todoItem, todoItem);
+      this.todoItems.push(todoItem)
+    },
+    clearAll() {
+      localStorage.clear();
+      this.todoItems = [];
+    }
   }
 }
 </script>
 
 <style>
-  body {
-    text-align: center;
-    background-color: #F6F6F8;
-  }
+body {
+  text-align: center;
+  background-color: #F6F6F8;
+}
 
-  input {
-    border-style: groove;
-    width: 200px;
-  }
+input {
+  border-style: groove;
+  width: 200px;
+}
 
-  button {
-    border-style: groove;
-  }
+button {
+  border-style: groove;
+}
 
-  .shadow {
-    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
-  }
+.shadow {
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
+}
 </style>

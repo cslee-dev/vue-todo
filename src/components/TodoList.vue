@@ -15,9 +15,9 @@
 <script>
 export default {
   name: "TodoList",
+  props: ['todoItems'],
   data() {
     return {
-      todoItems: [],
       shadow: 'shadow',
       checkBtn: ['checkBtn', 'fas', 'fa-check'],
       trashIcon: ['far', 'fa-trash-alt'],
@@ -25,17 +25,10 @@ export default {
 
     }
   },
-  created() {
-    if (localStorage.length > 0) {
-      for (var i = 0; i < localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i));
-      }
-    }
-  },
   methods: {
     removeTodo(todoItem, index) {
-      localStorage.removeItem(todoItem);
-      this.todoItems.splice(index, 1);
+      console.log(todoItem, index);
+      this.$emit('removeBtn', todoItem, index);
     }
   }
 }
